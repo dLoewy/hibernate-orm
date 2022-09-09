@@ -2116,6 +2116,12 @@ public interface AvailableSettings extends org.hibernate.jpa.AvailableSettings {
 	String ENABLE_SYNONYMS = "hibernate.synonyms";
 
 	/**
+	 * If enabled, allows schema update and validation to support DB2 aliases.  Due
+	 * to the infrequent use of this feature, this is disabled by default.
+	 */
+	String ENABLE_ALIASES = "hibernate.aliases";
+
+	/**
 	 * Identifies a comma-separate list of values to specify extra table types,
 	 * other than the default "TABLE" value, to recognize as defining a physical table
 	 * by schema update, creation and validation.

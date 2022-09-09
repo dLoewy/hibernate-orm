@@ -25,6 +25,7 @@ import org.hibernate.boot.model.naming.DatabaseIdentifier;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.relational.QualifiedTableName;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.engine.config.spi.StandardConverters;
 import org.hibernate.engine.jdbc.env.spi.IdentifierHelper;
@@ -101,8 +102,13 @@ public abstract class AbstractInformationExtractorImpl implements InformationExt
 		final List<String> tableTypesList = new ArrayList<>();
 		tableTypesList.add( "TABLE" );
 		tableTypesList.add( "VIEW" );
-		if ( ConfigurationHelper.getBoolean( AvailableSettings.ENABLE_SYNONYMS, configService.getSettings(), false ) ) {
+		if ( ConfigurationHelper.getBoolean( AvailableSettings.ENABLE_SYNONYMS, configService.getSettings(), false )
+				|| extractionContext.getJdbcEnvironment().getDialect() instanceof DB2Dialect ) {
 			tableTypesList.add( "SYNONYM" );
+		}
+		if ( ConfigurationHelper.getBoolean( AvailableSettings.ENABLE_ALIASES, configService.getSettings(), false )
+				|| extractionContext.getJdbcEnvironment().getDialect() instanceof DB2Dialect) {
+			tableTypesList.add( "ALIAS" );
 		}
 		Collections.addAll( tableTypesList, extraPhysicalTableTypes );
 		extractionContext.getJdbcEnvironment().getDialect().augmentRecognizedTableTypes( tableTypesList );
